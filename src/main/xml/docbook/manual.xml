@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="en">
+         
+  <info>
+    <title>Example Product Documentation</title>    
+    <author><personname>Alan Parkinson</personname></author>
+  </info>
+
+  <section>
+    <title>What's new</title>
+    <para>Test paragraph.</para>
+  </section>
+
+  <section>
+    <title>Getting started</title>
+    <para>Test paragraph.</para>
+    <section>
+      <title>Download and install</title>      
+      <para>Test paragraph.</para>
+    </section>
+    <section>
+      <title>Your first project</title>      
+      <para>Test paragraph.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Release notes</title>
+    <para>Test paragraph.</para>
+  </section>
+    
+</article>

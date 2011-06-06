@@ -1,0 +1,96 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.storyiq.examples</groupId>
+  <artifactId>docbook-build</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>DocBook Example</name>
+  <description>A Example Maven project containing DocBook generated documentation</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>net.sf.docbook</groupId>
+      <artifactId>docbook-xsl</artifactId>
+      <version>1.75.2</version>
+      <type>zip</type>
+      <classifier>ns-resources</classifier>
+    </dependency>
+    <dependency>
+      <groupId>net.sf.docbook</groupId>
+      <artifactId>docbook-xml</artifactId>
+      <version>5.0-all</version>
+      <type>zip</type>
+      <classifier>resources</classifier>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack-shared-resources</id>
+            <goals>
+              <goal>unpack-dependencies</goal>
+            </goals>
+            <phase>generate-resources</phase>
+            <configuration>
+              <outputDirectory>${project.build.directory}/generated-resources</outputDirectory>
+              <includeGroupIds>net.sf.docbook</includeGroupIds>
+              <includeArtifactIds>docbook-xsl</includeArtifactIds>
+              <includeClassifiers>ns-resources</includeClassifiers>
+              <excludeTransitive>true</excludeTransitive>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>1.0</version>
+        <executions>
+          <execution>
+            <id>generate-html</id>
+            <goals>
+              <goal>transform</goal>
+            </goals>
+            <phase>compile</phase>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <!-- the stylesheet is located in the previously extracted directory under the docbook/ directory -->
+                  <stylesheet>${project.build.directory}/generated-resources/docbook/html/docbook.xsl</stylesheet>
+                  <!-- rename the file with a proper extension -->
+                  <fileMappers>
+                    <fileMapper implementation="org.codehaus.plexus.components.io.filemappers.FileExtensionMapper">
+                      <targetExtension>.html</targetExtension>
+                    </fileMapper>
+                  </fileMappers>
+                  <dir>src/main/xml/docbook</dir>
+                  <includes>
+                    <include>manual.xml</include>
+                  </includes>
+                  <outputDir>${project.build.directory}/docbook</outputDir>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>xalan</groupId>
+            <artifactId>xalan</artifactId>
+            <version>2.7.1</version>
+          </dependency>
+          <dependency>
+            <groupId>xerces</groupId>
+            <artifactId>xercesImpl</artifactId>
+            <version>2.9.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+    </plugins>
+  </build>
+</project>
